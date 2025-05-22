@@ -1,0 +1,27 @@
+# Ignore node modules
+node_modules/
+
+# Ignore lock files (optional)
+package-lock.json
+
+# Ignore log files
+logs/
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore compiled files
+dist/
+build/
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Ignore environment variables
+.env
