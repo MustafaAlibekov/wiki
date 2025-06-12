@@ -1,5 +1,6 @@
-const pool = require("../db")
+const pool = require("../db");
 
+// Добавление новой статьи
 exports.addArticle = (req, res) => {
     const post = req.body;
 
@@ -26,19 +27,46 @@ exports.addArticle = (req, res) => {
     });
 };
 
+// Получение статьи по ID
 exports.getArticle = (req, res) => {
-    const articleId = req.params.id;
-    const query = (`SELECT title, content_html FROM articles WHERE id = $1`);
+    const id = parseInt(req.params.id);
 
-    pool.query(query, [articleId], (err, result) => 
-            
-            {
-            if (err) {
-                        console.error('Ошибка при выполнении запроса', err);
-                        return res.status(500).send('Внутренняя ошибка сервера');
-                    };
-                    console.log('пользователь найден ' + result.rows[0]);
-                    res.send(result.rows[0]);
-            })};
+    if (isNaN(id)) {
+        return res.status(400).json({ error: 'ID должен быть числом' });
+    }
 
+    const query = 'SELECT title, content_html FROM articles WHERE id = $1';
 
+    pool.query(query, [id], (err, result) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса', err);
+            return res.status(500).send('Внутренняя ошибка сервера');
+        }
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('Статья не найдена');
+        }
+
+        console.log('Статья найдена:', result.rows[0]);
+        res.json(result.rows[0]);
+    });
+};
+
+// Получение случайной статьи
+exports.getRandomArticle = (req, res) => {
+    const query = `SELECT * FROM articles ORDER BY RANDOM() LIMIT 1`;
+
+    pool.query(query, (err, result) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса', err);
+            return res.status(500).send('Внутренняя ошибка сервера');
+        }
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('Статья не найдена');
+        }
+
+        console.log('Случайная статья:', result.rows[0]);
+        res.json(result.rows[0]);
+    });
+};

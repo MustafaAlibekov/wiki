@@ -4,7 +4,7 @@ const pool = new Pool(
 {
     host: 'localhost',
     user: 'postgres',
-    database: 'WikiDataBase',
+    database: 'wiki',
     password: '12345',
     host: '127.0.0.1',
     port: 5432

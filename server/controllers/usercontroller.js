@@ -52,7 +52,9 @@ exports.getUser = (req, res) =>
                         return res.status(500).send('Внутренняя ошибка сервера');
                     };
                     console.log('пользователь найден ' + result.rows[0]);
-                    res.send(result.rows[0]);
+                    const user = result.rows[0];
+    console.log('Найденный пользователь:', user); // Теперь будет красиво в консоли
+    res.json(user); // ✅ Отправляем как JSON
             }
     )};
 
